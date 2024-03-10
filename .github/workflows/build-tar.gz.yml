@@ -1,5 +1,9 @@
 name: Criar release e arquivo .tar.gz
 
+env:
+  PACKAGE_NAME: chili-void-bspwm-skel.tar.gz
+  VERSION: ${{ steps.time.outputs.time }}  # Usando a saída do passo que obtém a hora
+
 # Gatilhos para o workflow
 on:
   push:
@@ -24,6 +28,16 @@ on:
 
 # Jobs do workflow
 jobs:
+  # Job para obter a hora atual
+  get-time:
+    runs-on: ubuntu-latest
+    outputs:
+      time: ${{ steps.time.outputs.time }}  # Saída do job
+    steps:
+      - name: Obter a hora atual
+        id: time
+        run: echo "::set-output name=time::$(date +'%Y%m%d%H%M%S')"
+
   # Job para preparar a release
   prepare-release:
     runs-on: ubuntu-20.04  # Define a máquina virtual a ser usada
@@ -41,20 +55,20 @@ jobs:
     needs: [prepare-release]  # Depende do job prepare-release
     strategy:
       matrix:
-        package: [chili-void-bspwm-skel.tar.gz] # Define o nome do pacote
+        package: [$PACKAGE_NAME] # Define o nome do pacote
 
     steps:
     - name: Checkout do código
       uses: actions/checkout@v2
 
     - name: Criar arquivo .tar.gz
-	   run: tar -cf ${{ matrix.package }} .
+      run: tar -czf $PACKAGE_NAME .
 
     - name: Salvar arquivo .tar.gz como artefato
       uses: actions/upload-artifact@v2
       with:
         name: arquivos
-        path: ${{ matrix.package }}
+        path: $PACKAGE_NAME
 
     - name: Criar release
       id: create_release
@@ -62,8 +76,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
       with:
-        tag_name: v1.0.0-$(date +"%Y%m%d%H%M%S")
-        release_name: Release v1.0.0
+        tag_name: $VERSION
+        release_name: Release $VERSION
         body: |
           Descrição do release aqui.
         draft: false
@@ -76,6 +90,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./${{ matrix.package }}
-        asset_name: ${{ matrix.package }}
+        asset_path: ./$PACKAGE_NAME
+        asset_name: $PACKAGE_NAME
         asset_content_type: application/gzip
