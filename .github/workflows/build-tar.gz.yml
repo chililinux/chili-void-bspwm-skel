@@ -35,7 +35,10 @@ jobs:
     steps:
       - name: Obter a hora atual
         id: time
-        run: echo "::set-output name=time::$(date +'%Y%m%d%H%M%S')"
+        run: echo "::set-output name=time::$(date +'%Y.%m.%d-%H%M')"
+
+YYYY-MM-DD_HH-mm
+
 
   # Job para preparar a release
   prepare-release:
