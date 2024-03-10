@@ -2,6 +2,10 @@ name: Criar release e arquivo .tar.gz
 
 # Gatilhos para o workflow
 on:
+  push:
+    branches:
+      - main
+
   workflow_dispatch:  # Permite a execução manual do workflow
     inputs:
       debug_enabled:  # Input para habilitar o modo de depuração
@@ -17,11 +21,6 @@ on:
     types:
       - webhook
       - '**'
-
-on:
-  push:
-    branches:
-      - main
 
 # Jobs do workflow
 jobs:
