@@ -41,18 +41,16 @@ jobs:
     needs: [prepare-release]  # Depende do job prepare-release
     strategy:
       matrix:
-        NAME: [chililinux] # Define o nome do SO
-        EDITION: [bspwm] # Define a edição
-        MANJAROBRANCH: [testing] # Define a branch do Manjaro (stable, testing ou unstable)
-        BIGBRANCH: [testing] # Define a branch do Biglinux (stable ou testing)
-        KERNEL: [latest] # Define a versão do kernel (atualLts, latest)
+        NAME: [chili-void-bspwm-skel] # Define o nome do pacote
 
     steps:
     - name: Checkout do código
       uses: actions/checkout@v2
 
     - name: Criar arquivo .tar.gz
-      run: tar -cf chili-void-bspwm-skel.tar.gz .
+		with:
+			package: ${{ matrix.name }}-${{ steps.create_release.outputs.upload_url }}.tar.gz
+      run: tar -cf ${{ package }} .
 
     - name: Salvar arquivo .tar.gz como artefato
       uses: actions/upload-artifact@v2
