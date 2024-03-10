@@ -37,9 +37,6 @@ jobs:
         id: time
         run: echo "::set-output name=time::$(date +'%Y.%m.%d-%H%M')"
 
-YYYY-MM-DD_HH-mm
-
-
   # Job para preparar a release
   prepare-release:
     runs-on: ubuntu-20.04  # Define a máquina virtual a ser usada
