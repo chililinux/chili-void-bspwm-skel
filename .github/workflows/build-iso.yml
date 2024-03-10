@@ -1,5 +1,5 @@
 # Nome do workflow
-name: chili-void-bspwm-skel
+name: build-iso
 
 # Gatilhos para o workflow
 on:
