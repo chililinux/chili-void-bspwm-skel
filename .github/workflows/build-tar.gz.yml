@@ -24,8 +24,28 @@ on:
 
 # Jobs do workflow
 jobs:
+  # Job para preparar a release
+  prepare-release:
+    runs-on: ubuntu-20.04  # Define a máquina virtual a ser usada
+    steps:
+      - id: time
+        uses: nanzm/get-time-action@v1.1  # Ação para obter o tempo atual
+        with:
+          format: 'YYYY-MM-DD_HH-mm'
+    outputs:
+      release_tag: ${{ steps.time.outputs.time }}  # Saída do job
+
+ # Job para construir a release
   build:
     runs-on: ubuntu-latest
+    needs: [prepare-release]  # Depende do job prepare-release
+    strategy:
+      matrix:
+        NAME: [chililinux] # Define o nome do SO
+        EDITION: [bspwm] # Define a edição
+        MANJAROBRANCH: [testing] # Define a branch do Manjaro (stable, testing ou unstable)
+        BIGBRANCH: [testing] # Define a branch do Biglinux (stable ou testing)
+        KERNEL: [latest] # Define a versão do kernel (atualLts, latest)
 
     steps:
     - name: Checkout do código
