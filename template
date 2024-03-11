@@ -1,5 +1,5 @@
-# Template file for 'chili-void-awesome-skel'
-pkgname=chili-void-awesome-skel
+# Template file for 'chili-void-bspwm-skel'
+pkgname=chili-void-bspwm-skel
 version=1.0.0
 revision=1
 noarch=true
@@ -23,5 +23,5 @@ do_fetch() {
 
 do_install() {
 	vcopy etc /
-	vcopy usr /
+#	vcopy usr /
 }

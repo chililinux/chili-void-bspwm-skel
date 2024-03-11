@@ -1,7 +1,7 @@
 # Maintainer: Vilmar Catafesta <vcatafesta@gmail.com>
 
-pkgname=chili-void-awesome-skel
-pkgdesc="Skel for Void AWESOME"
+pkgname=chili-void-bspwm-skel
+pkgdesc="Skel for Void BSPWM"
 # depends=('')
 # makedepends=('')
 # conflicts=('')
